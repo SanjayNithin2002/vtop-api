@@ -6,7 +6,13 @@ const Student = require("../models/students");
 router.get("/", (req, res, next) => {
     Student.find().exec()
         .then(docs => {
-            res.status(200).json(docs);
+            if(docs.length >=1){
+                res.status(200).json(docs);
+            }else{
+                res.status(404).json({
+                    message : "404 - Record Not Found"
+                });
+            }
         })
         .catch(err => {
             res.status(500).json({
@@ -18,7 +24,13 @@ router.get("/", (req, res, next) => {
 router.get("/:id", (req, res, next) => {
     Student.findById(req.params.id).exec()
         .then(doc => {
-            res.status(200).json(doc);
+            if(doc !== null){
+                res.status(200).json(doc);
+            }else{
+                res.status(404).json({
+                    message : "404 - Record Not Found"
+                });
+            }
         })
         .catch(err => {
             res.status(500).json({
